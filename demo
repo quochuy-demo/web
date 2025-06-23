@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nhà Trọ</title>
+  <style>
+    /* Reset và cài đặt cơ bản */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* Container chính */
+    .container {
+      max-width: 600px;
+      width: 100%;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+      color: white;
+      text-align: center;
+      padding: 30px 20px;
+      position: relative;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+      opacity: 0.3;
+    }
+
+    .header h1 {
+      font-size: 2.5em;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Nút chuyển chế độ */
+    .mode-selector {
+      display: flex;
+      margin: 20px 20px 0 20px;
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 5px;
+      gap: 5px;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      background: transparent;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Container của form */
+    .form-container {
+      padding: 40px 30px;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #333;
+      font-size: 1.1em;
+    }
+
+    .form-input,
+    .form-select {
+      width: 100%;
+      padding: 15px;
+      border: 2px solid #e1e8ed;
+      border-radius: 12px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: white;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
+    
+    .form-select:disabled {
+        background-color: #f8f9fa;
+        cursor: not-allowed;
+    }
+
+    .form-input:focus,
+    .form-select:focus {
+      outline: none;
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 20px;
+      margin-top: 10px
+    }
+
+    .radio-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 12px 15px;
+      border: 2px solid #e1e8ed;
+      border-radius: 10px;
+      transition: all .3s ease;
+      flex: 1;
+      justify-content: center;
+      min-height: 48px;
+      touch-action: manipulation
+    }
+
+    .radio-item:hover {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, .05)
+    }
+
+    .radio-item input[type=radio] {
+      margin: 0;
+      transform: scale(1.2)
+    }
+
+    .radio-item input[type=radio]:checked+span {
+      color: #667eea;
+      font-weight: 600
+    }
+
+    .radio-item:has(input[type=radio]:checked) {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, .1)
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    .add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 15px;
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all .3s ease;
+      margin-top: 10px
+    }
+
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(40, 167, 69, .3)
+    }
+
+    .dynamic-field {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr auto;
+      gap: 10px;
+      align-items: end;
+      margin-top: 15px;
+      padding: 15px;
+      background: rgba(102, 126, 234, .05);
+      border-radius: 10px;
+      border: 1px dashed #667eea
+    }
+
+    .remove-btn {
+      background: #dc3545;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: all .3s ease;
+      line-height: 30px;
+    }
+
+    .remove-btn:hover {
+      background: #c82333;
+      transform: scale(1.1)
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .3s ease;
+      margin-top: 20px;
+      box-shadow: 0 10px 20px rgba(102, 126, 234, .3)
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(102, 126, 234, .4)
+    }
+
+    .submit-btn:active {
+      transform: translateY(-1px)
+    }
+    
+    .print-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all .3s ease;
+        margin-top: 15px;
+        box-shadow: 0 10px 20px rgba(0, 123, 255, .2);
+    }
+    
+    .print-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 30px rgba(0, 123, 255, .3);
+    }
+
+    .room-detail {
+      background: rgba(255, 255, 255, 1);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+      border: 1px solid #e1e8ed
+    }
+    
+    .invoice-header {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .invoice-header h2 {
+        margin: 0;
+        font-size: 1.8em;
+        color: #333;
+    }
+
+    .invoice-header p {
+        margin: 5px 0 0;
+        color: #555;
+    }
+
+    .expense-title {
+        color: #28a745;
+        text-align: center;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        border-bottom: 2px solid #e1e8ed;
+    }
+
+    .detail-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #e1e8ed
+    }
+
+    .detail-item:last-child {
+      border-bottom: none;
+    }
+
+    .detail-item span:first-child {
+      color: #555;
+      font-weight: 500;
+    }
+
+    .detail-item span:last-child {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .detail-item.total span {
+      color: #dc3545 !important;
+      font-size: 1.2em;
+      font-weight: 700 !important;
+    }
+
+    .detail-item.total {
+      padding-top: 15px;
+      border-bottom: none !important;
+    }
+    
+    /*
+    .payment-info {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px dashed #ccc;
+        display: flex;
+        gap: 20px;
+        align-items: center;
+    }
+    
+    .payment-info .qr-code {
+        flex-shrink: 0;
+    }
+    
+    .payment-info .qr-code img {
+        width: 160px;
+        height: 160px;
+        display: block;
+    }
+    
+    .payment-info .bank-details p {
+        margin: 0 0 5px 0;
+        font-size: 0.9em;
+    }
+    */
+
+    .hidden {
+      display: none;
+    }
+
+    /* ---- CSS FOR SUCCESS MODAL ---- */
+    .success-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .success-modal-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .success-modal-content {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .success-modal-overlay.visible .success-modal-content {
+      transform: scale(1);
+    }
+
+    .success-modal-content h2 {
+      font-size: 2em;
+      color: #28a745;
+      margin-bottom: 15px;
+    }
+
+    .success-modal-content p {
+      font-size: 1.1em;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .success-modal-close-btn {
+      padding: 12px 30px;
+      font-size: 1em;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .success-modal-close-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    /* Responsive styles */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px
+      }
+
+      .container {
+        margin: 0 auto;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, .15)
+      }
+
+      .header {
+        padding: 25px 15px
+      }
+
+      .header h1 {
+        font-size: 2em
+      }
+
+      .form-container {
+        padding: 25px 20px
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 20px
+      }
+
+      .radio-group {
+        flex-direction: column;
+        gap: 12px
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 5px
+      }
+
+      .container {
+        width: calc(100% - 10px);
+        margin: 5px;
+      }
+
+      .header h1 {
+        font-size: 1.8em
+      }
+
+      .form-container {
+        padding: 20px 15px
+      }
+
+      .dynamic-field {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        text-align: center;
+      }
+
+      .dynamic-field .remove-btn {
+        margin: 5px auto 0;
+      }
+
+      .success-modal-content {
+        padding: 30px 20px;
+      }
+
+      .success-modal-content h2 {
+        font-size: 1.8em;
+      }
+    }
+    
+    /* PRINT STYLES */
+    @media print {
+        body {
+            background: #fff;
+            padding: 0;
+        }
+        .container {
+            box-shadow: none;
+            max-width: 100%;
+            width: 100%;
+            border-radius: 0;
+            padding: 0;
+            margin: 0;
+            background: none;
+            backdrop-filter: none;
+        }
+        .header, .mode-selector, .form-group, .print-btn, .submit-btn, .success-modal-overlay {
+            display: none !important;
+        }
+        .form-container {
+            padding: 0;
+        }
+        #roomDetailContent {
+            display: block;
+        }
+        .room-detail {
+            border: 1px solid #ccc;
+            box-shadow: none;
+            padding: 10mm;
+            margin: 0 auto;
+            max-width: 180mm;
+            -webkit-print-color-adjust: exact; 
+            print-color-adjust: exact;
+        }
+        .payment-info {
+            display: none; /* Hide QR code section on print */
+        }
+        @page {
+            size: A5; /* Changed from A4 to A5 */
+            margin: 15mm; /* Adjusted margin for A5 */
+        }
+    }
+    
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🏠 Nhà Trọ</h1>
+    </div>
+
+    <!-- Mode Selector -->
+    <div class="mode-selector">
+      <button class="mode-btn active" onclick="switchMode('phong-tro')">📋 Phòng Trọ</button>
+      <button class="mode-btn" onclick="switchMode('chi-tieu')">💰 Chi Tiêu Nhà Trọ</button>
+      <button class="mode-btn" onclick="switchMode('chi-tiet')">📊 Chi Tiết Nhà Trọ</button>
+    </div>
+
+    <div class="form-container">
+      <!-- Form Phòng Trọ -->
+      <form id="googleForm" class="form-mode"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSeO5lYG8qgfi2ZAZOaKVhm6pZlMYWbUeQf8xymQkw6jcYv_CA/formResponse"
+        method="POST" target="hidden_iframe">
+        <div class="form-group">
+          <label class="form-label">📋 Chọn Phòng Trọ</label>
+          <select class="form-select" id="phongTro" name="entry.1267977433" required>
+            <option value="">-- Chọn phòng trọ --</option>
+            <option value="Phòng trọ 1">Phòng trọ 1</option>
+            <option value="Phòng trọ 2">Phòng trọ 2</option>
+            <option value="Phòng trọ 3">Phòng trọ 3</option>
+            <option value="Phòng trọ 4">Phòng trọ 4</option>
+            <option value="Phòng trọ 5">Phòng trọ 5</option>
+            <option value="Phòng trọ 6">Phòng trọ 6</option>
+            <option value="Phòng trọ 7">Phòng trọ 7</option>
+            <option value="Phòng trọ 8">Phòng trọ 8</option>
+            <option value="Phòng trọ 9">Phòng trọ 9</option>
+            <option value="Phòng trọ 10">Phòng trọ 10</option>
+            <option value="Phòng trọ 11">Phòng trọ 11</option>
+            <option value="Phòng trọ 12">Phòng trọ 12</option>
+            <option value="Phòng trọ 13">Phòng trọ 13</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">🏠 Tiền Phòng (VNĐ)</label>
+          <input type="number" class="form-input" id="tienPhong" name="entry.841534819" placeholder="Nhập tiền phòng"
+            min="0" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">❄️ Máy Lạnh</label>
+          <div class="radio-group">
+            <div class="radio-item">
+              <input type="radio" id="maylanh_co" name="entry.1850309064" value="Có máy lạnh">
+              <span>Có máy lạnh</span>
+            </div>
+            <div class="radio-item">
+              <input type="radio" id="maylanh_khong" name="entry.1850309064" value="Không có máy lạnh">
+              <span>Không có máy lạnh</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">⚡ Số Điện</label>
+            <input type="number" class="form-input" id="soDien" name="entry.914948746" placeholder="Nhập số điện"
+              min="0">
+            <small style="color: #666; font-size: 0.85em; margin-top: 5px; display: block;">(Điện 3.500/kWh)</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">💧 Số Nước</label>
+            <input type="number" class="form-input" id="soNuoc" name="entry.1671725574" placeholder="Nhập số nước"
+              min="0">
+            <small style="color: #666; font-size: 0.85em; margin-top: 5px; display: block;">(Nước 12.000/khối)</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📶 WiFi</label>
+          <div class="radio-group">
+            <div class="radio-item">
+              <input type="radio" id="wifi_co" name="entry.1251226745" value="Có WiFi">
+              <span>Có WiFi</span>
+            </div>
+            <div class="radio-item">
+              <input type="radio" id="wifi_khong" name="entry.1251226745" value="Không có WiFi">
+              <span>Không có WiFi</span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">💰 Tiền Cọc (VNĐ)</label>
+          <input type="number" class="form-input" id="tienCoc" name="entry.2141472102" placeholder="Nhập số tiền cọc"
+            min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📅 Ngày Vào Ở</label>
+          <input type="text" class="form-input" id="ngayVaoO" name="entry.1665866351" placeholder="VD: 15/03/2025">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📝 Khác</label>
+          <button type="button" class="add-btn" onclick="addKhacField('phong-tro')">
+            ➕ Thêm
+          </button>
+          <div id="khacFields"></div>
+        </div>
+        <input type="hidden" name="entry.1810495382" id="khacHiddenInput">
+        <button type="submit" class="submit-btn">✅ Lưu & Gửi Thông Tin</button>
+      </form>
+
+      <!-- Form Chi Tiêu Nhà Trọ -->
+      <form id="chiTieuForm" class="form-mode hidden"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSfqlneIic0agm0FnbXnWjfdSC7McBEETJY_5wdbTvFmlIIdiw/formResponse"
+        method="POST" target="hidden_iframe">
+        <div class="form-group">
+          <label class="form-label">🗑️ Tiền Rác (VNĐ)</label>
+          <input type="number" class="form-input" id="tienRac" name="entry.148618162" placeholder="Nhập tiền rác"
+            min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">💡 Tiền Đèn Đường (VNĐ)</label>
+          <input type="number" class="form-input" id="tienDenDuong" name="entry.2115158751" placeholder="Nhập tiền đèn đường" min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">⚡ Tiền Điện (VNĐ)</label>
+          <input type="number" class="form-input" id="tienDien" name="entry.594135457" placeholder="Nhập tiền điện"
+            min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📶 Tiền WiFi (VNĐ)</label>
+          <input type="number" class="form-input" id="tienWifi" name="entry.1430495475" placeholder="Nhập tiền WiFi"
+            min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">💧 Tiền Nước (VNĐ)</label>
+          <input type="number" class="form-input" id="tienNuoc" name="entry.1849415511" placeholder="Nhập tiền nước"
+            min="0">
+        </div>
+        <div class="form-group">
+          <label class="form-label">📝 Khác</label>
+          <button type="button" class="add-btn" onclick="addKhacField('chi-tieu')">
+            ➕ Thêm
+          </button>
+          <div id="khacFieldsChiTieu"></div>
+        </div>
+        <input type="hidden" name="entry.1341093384" id="khacHiddenInputChiTieu">
+        <button type="submit" class="submit-btn">
+          ✅ Lưu Chi Tiêu Nhà Trọ
+        </button>
+      </form>
+
+      <!-- Div Chi Tiết Nhà Trọ -->
+      <div id="chiTietForm" class="form-mode hidden">
+        <div class="form-group">
+            <label class="form-label">📅 Chọn Tháng/Năm</label>
+            <select class="form-select" id="monthYearSelect" onchange="handleMonthSelection()">
+                <option value="">-- Vui lòng chờ, đang tải tháng --</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">📋 Chọn Xem Chi Tiết</label>
+          <select class="form-select" id="phongChiTiet" onchange="loadRoomDetail()" disabled>
+            <option value="">-- Trước tiên hãy chọn tháng/năm --</option>
+            <optgroup label="Phòng Trọ">
+              <option value="Phòng trọ 1">Phòng trọ 1</option>
+              <option value="Phòng trọ 2">Phòng trọ 2</option>
+              <option value="Phòng trọ 3">Phòng trọ 3</option>
+              <option value="Phòng trọ 4">Phòng trọ 4</option>
+              <option value="Phòng trọ 5">Phòng trọ 5</option>
+              <option value="Phòng trọ 6">Phòng trọ 6</option>
+              <option value="Phòng trọ 7">Phòng trọ 7</option>
+              <option value="Phòng trọ 8">Phòng trọ 8</option>
+              <option value="Phòng trọ 9">Phòng trọ 9</option>
+              <option value="Phòng trọ 10">Phòng trọ 10</option>
+              <option value="Phòng trọ 11">Phòng trọ 11</option>
+              <option value="Phòng trọ 12">Phòng trọ 12</option>
+              <option value="Phòng trọ 13">Phòng trọ 13</option>
+            </optgroup>
+            <optgroup label="Thống Kê">
+              <option value="tong_chi">Tổng chi toàn bộ trọ</option>
+              <option value="tinh_toan">Tính toán chi tiêu</option>
+            </optgroup>
+          </select>
+        </div>
+        <div id="roomDetailContent">
+          <!-- Nội dung chi tiết phòng sẽ được tải vào đây -->
+        </div>
+        <div id="printButtonContainer">
+            <!-- Nút in sẽ được thêm vào đây bằng JavaScript -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL THÔNG BÁO THÀNH CÔNG -->
+  <div class="success-modal-overlay" id="successModalOverlay">
+    <div class="success-modal-content">
+      <h2>🎉 Thành Công!</h2>
+      <p>Thông tin của bạn đã được gửi đi thành công.</p>
+      <button class="success-modal-close-btn" onclick="hideSuccessModal()">Đóng</button>
+    </div>
+  </div>
+
+  <!-- IFRAME ẨN ĐỂ SUBMIT FORM -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
+  <script>
+    // --- CONFIGURATION ---
+    const SPREADSHEET_ID = '1Hqwox3Ux-MR3X8BPkbYY6feBTz-BZOUlHNKNhRlrWIU';
+    //const API_KEY = 'YOUR_GOOGLE_API_KEY'; // API Key được giữ kín, không hiển thị ở đây
+
+    // --- STATE & COUNTERS ---
+    let khacCounter = 0;
+    let khacCounterChiTieu = 0;
+    let formSubmitted = false;
+    let submittedFormId = null;
+
+    // --- MODE SWITCHING ---
+    function switchMode(mode) {
+      const googleForm = document.getElementById('googleForm');
+      const chiTieuForm = document.getElementById('chiTieuForm');
+      const chiTietForm = document.getElementById('chiTietForm');
+      const buttons = document.querySelectorAll('.mode-btn');
+
+      buttons.forEach(btn => btn.classList.remove('active'));
+      googleForm.classList.add('hidden');
+      chiTieuForm.classList.add('hidden');
+      chiTietForm.classList.add('hidden');
+
+      if (mode === 'phong-tro') {
+        googleForm.classList.remove('hidden');
+        buttons[0].classList.add('active');
+      } else if (mode === 'chi-tieu') {
+        chiTieuForm.classList.remove('hidden');
+        buttons[1].classList.add('active');
+      } else if (mode === 'chi-tiet') {
+        chiTietForm.classList.remove('hidden');
+        buttons[2].classList.add('active');
+        const monthSelect = document.getElementById('monthYearSelect');
+        if (monthSelect.options.length <= 1) {
+            populateMonthYearSelector();
+        }
+      }
+    }
+
+    // --- DYNAMIC FIELD MANAGEMENT ---
+    function addKhacField(type) {
+      const isPhongTro = type === 'phong-tro';
+      const containerId = isPhongTro ? 'khacFields' : 'khacFieldsChiTieu';
+      const container = document.getElementById(containerId);
+      const counter = isPhongTro ? ++khacCounter : ++khacCounterChiTieu;
+      const fieldDiv = document.createElement('div');
+      fieldDiv.className = 'dynamic-field';
+      fieldDiv.id = `khacField_${type}_${counter}`;
+      fieldDiv.innerHTML = `
+        <input type="text" class="form-input" placeholder="Tên mục">
+        <span style="font-weight: bold; color: #666;">-</span>
+        <input type="number" class="form-input" placeholder="Số tiền">
+        <button type="button" class="remove-btn" onclick="removeKhacField('khacField_${type}_${counter}')">✕</button>
+      `;
+      container.appendChild(fieldDiv);
+    }
+
+    function removeKhacField(fieldId) {
+      const field = document.getElementById(fieldId);
+      if (field) field.remove();
+    }
+
+    // --- CURRENCY FORMATTING ---
+    function parseAndFormatCurrency(amount) {
+      if (amount === undefined || amount === null || amount === '') return '0 đ';
+      const cleanAmount = String(amount).replace(/[^0-9-]/g, '');
+      const number = Number(cleanAmount);
+      if (isNaN(number)) return '0 đ';
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+    }
+
+    // --- FORM & MODAL LOGIC ---
+    function handleFormResponse() {
+      if (formSubmitted && submittedFormId) {
+        const modalOverlay = document.getElementById('successModalOverlay');
+        modalOverlay.classList.add('visible');
+        const formToReset = document.getElementById(submittedFormId);
+        if (formToReset) formToReset.reset();
+
+        if (submittedFormId === 'googleForm') {
+          document.getElementById('khacFields').innerHTML = '';
+          khacCounter = 0;
+        } else if (submittedFormId === 'chiTieuForm') {
+          document.getElementById('khacFieldsChiTieu').innerHTML = '';
+          khacCounterChiTieu = 0;
+        }
+        formSubmitted = false;
+        submittedFormId = null;
+      }
+    }
+
+    function hideSuccessModal() {
+      document.getElementById('successModalOverlay').classList.remove('visible');
+    }
+
+    // --- GOOGLE SHEETS DATA FETCHING & PRINTING ---
+
+    async function fetchData(endpoint) {
+        // Đây là nơi bạn sẽ gọi đến backend của mình
+        // Ví dụ: const response = await fetch(`https://your-backend-url.com/${endpoint}`);
+        // Vì hiện tại chưa có backend, ta sẽ giả lập lại việc gọi Google API nhưng không để lộ key
+        // LƯU Ý: Đây chỉ là giải pháp tạm thời, bạn CẦN xây dựng backend để bảo mật API KEY
+        const API_KEY_TEMP = 'AIzaSyDwMZZiwBsn0_YI3sbwbUovN7kzxfU9SVw'; // Key tạm thời
+        const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SPREADSHEET_ID}${endpoint}&key=${API_KEY_TEMP}`);
+        if (!response.ok) {
+            throw new Error('Lỗi kết nối đến máy chủ hoặc Google Sheets.');
+        }
+        return response.json();
+    }
+
+
+    async function populateMonthYearSelector() {
+        const monthSelect = document.getElementById('monthYearSelect');
+        const roomSelect = document.getElementById('phongChiTiet');
+        
+        monthSelect.innerHTML = '<option value="">-- Đang tải danh sách tháng --</option>';
+        monthSelect.disabled = true;
+        roomSelect.disabled = true;
+        roomSelect.value = '';
+
+        try {
+            const spreadsheetData = await fetchData('?fields=sheets.properties.title');
+            const allMonths = new Set();
+            const monthRegex = /(\d{1,2})\s*\/\s*(\d{4})/;
+
+            spreadsheetData.sheets.forEach(sheet => {
+                const title = sheet.properties.title;
+                const match = title.match(monthRegex);
+                if (match) {
+                    const month = parseInt(match[1]);
+                    const year = parseInt(match[2]);
+                    allMonths.add(`${month}/${year}`);
+                }
+            });
+            
+            const sortedMonths = Array.from(allMonths).sort((a, b) => {
+                const [m1, y1] = a.split('/').map(Number);
+                const [m2, y2] = b.split('/').map(Number);
+                return new Date(y2, m2 - 1) - new Date(y1, m1 - 1);
+            });
+
+            if (sortedMonths.length === 0) {
+                monthSelect.innerHTML = '<option value="">-- Không tìm thấy tháng --</option>';
+                return;
+            }
+
+            monthSelect.innerHTML = '<option value="">-- Chọn tháng/năm --</option>';
+            sortedMonths.forEach(monthYear => {
+                const option = document.createElement('option');
+                option.value = monthYear;
+                option.textContent = `Tháng ${monthYear}`;
+                monthSelect.appendChild(option);
+            });
+
+            monthSelect.disabled = false;
+
+        } catch (error) {
+            console.error('Lỗi khi tải danh sách tháng:', error);
+            monthSelect.innerHTML = `<option value="">Lỗi: ${error.message}</option>`;
+        }
+    }
+    
+    function handleMonthSelection() {
+        const monthSelect = document.getElementById('monthYearSelect');
+        const roomSelect = document.getElementById('phongChiTiet');
+        const contentDiv = document.getElementById('roomDetailContent');
+        const printBtnContainer = document.getElementById('printButtonContainer');
+
+        if (monthSelect.value) {
+            roomSelect.disabled = false;
+            roomSelect.value = '';
+            contentDiv.innerHTML = '';
+            printBtnContainer.innerHTML = '';
+        } else {
+            roomSelect.disabled = true;
+            roomSelect.value = '';
+            contentDiv.innerHTML = '';
+            printBtnContainer.innerHTML = '';
+        }
+    }
+
+    async function loadRoomDetail() {
+      const monthSelect = document.getElementById('monthYearSelect');
+      const roomSelect = document.getElementById('phongChiTiet');
+      const selectedMonth = monthSelect.value;
+      const selectedOption = roomSelect.value;
+      const contentDiv = document.getElementById('roomDetailContent');
+      const printBtnContainer = document.getElementById('printButtonContainer');
+
+      contentDiv.innerHTML = '';
+      printBtnContainer.innerHTML = '';
+
+
+      if (!selectedMonth || !selectedOption) {
+        return;
+      }
+
+      contentDiv.innerHTML = `<div class="room-detail"><p style="text-align: center;">Đang tải dữ liệu...</p></div>`;
+
+      try {
+        if (selectedOption === 'tong_chi') {
+          await displayTotalExpenses(selectedMonth, contentDiv);
+          printBtnContainer.innerHTML = `<button class="print-btn" onclick="window.print()">🖨️ In Báo Cáo</button>`;
+        } else if (selectedOption === 'tinh_toan') {
+          await displayExpenseCalculation(selectedMonth, contentDiv);
+           printBtnContainer.innerHTML = `<button class="print-btn" onclick="window.print()">🖨️ In Báo Cáo</button>`;
+        } else {
+          await displayIndividualRoom(selectedOption, selectedMonth, contentDiv);
+          printBtnContainer.innerHTML = `<button class="print-btn" onclick="window.print()">🖨️ In Hóa Đơn</button>`;
+        }
+      } catch (error) {
+         console.error('Lỗi khi tải dữ liệu chi tiết:', error);
+         contentDiv.innerHTML = `<div class="room-detail"><p style="text-align: center; color: red;">Đã xảy ra lỗi: ${error.message}</p></div>`;
+      }
+    }
+
+    async function displayIndividualRoom(selectedRoomName, selectedMonth, contentDiv) {
+      const sheetName = `Phòng Trọ Tháng ${selectedMonth}`;
+      const range = `${sheetName}!A:N`;
+      const data = await fetchData(`/values/${encodeURIComponent(range)}?`);
+      
+      if (!data.values || data.values.length < 2) throw new Error(`Không có dữ liệu trong trang tính "${sheetName}".`);
+      const rows = data.values;
+      const roomRow = rows.find(row => row[1] === selectedRoomName);
+      if (roomRow) {
+        const ghiChuRaw = roomRow[4] || '';
+        let tienWifi = 0;
+        let phiMayLanh = 0;
+        if (ghiChuRaw.includes('Có Wifi') || ghiChuRaw.includes('Có WiFi')) tienWifi = 25000;
+        if (ghiChuRaw.includes('Có máy lạnh')) phiMayLanh = 300000;
+
+        const roomDetails = {
+          tenPhong: roomRow[1], tienPhong: roomRow[3], soDienMoi: roomRow[5],
+          soNuocMoi: roomRow[6], soDienCu: roomRow[7], soNuocCu: roomRow[8],
+          tienCoc: roomRow[9], khac: roomRow[10], tienDien: roomRow[11],
+          tienNuoc: roomRow[12], tongCong: roomRow[13], tienWifi, phiMayLanh
+        };
+
+
+        // --- TẠO QR CODE ---
+        const numericAmount = String(roomDetails.tongCong).replace(/[^0-9]/g, '');
+        const roomNumber = selectedRoomName.replace(/\D/g, ''); // Lấy số phòng
+        const description = `Tien tro thang ${selectedMonth.replace('/', '')} phong tro ${roomNumber}`;
+        const qrApiUrl = `https://api.vietqr.io/image/970436-tranquochuy2000-print.png?amount=${numericAmount}&addInfo=${encodeURIComponent(description)}&accountName=TRAN%20QUOC%20HUY`;
+
+
+        let detailHtml = `
+          <div class="room-detail">
+              <div class="invoice-header">
+                <p style="font-size: 1.3em; color: #000; font-weight: bold; margin-bottom: 8px;">Nhà Trọ Dạ Thảo</p>
+                <h2>HÓA ĐƠN TIỀN TRỌ</h2>
+                <p>Tháng ${selectedMonth}</p>
+              </div>
+              <div class="detail-item"><span>Phòng</span><span><strong>${roomDetails.tenPhong || 'N/A'}</strong></span></div>
+              <div class="detail-item"><span>Tiền phòng</span><span>${parseAndFormatCurrency(roomDetails.tienPhong)}</span></div>
+              <div class="detail-item"><span>Tiền cọc</span><span>${parseAndFormatCurrency(roomDetails.tienCoc)}</span></div>
+              <div class="detail-item"><span>Số điện cũ</span><span>${roomDetails.soDienCu || 0}</span></div>
+              <div class="detail-item"><span>Số điện mới</span><span>${roomDetails.soDienMoi || 0}</span></div>
+              <div class="detail-item"><span>Tiền điện</span><span>${parseAndFormatCurrency(roomDetails.tienDien)}</span></div>
+              <div class="detail-item"><span>Số nước cũ</span><span>${roomDetails.soNuocCu || 0}</span></div>
+              <div class="detail-item"><span>Số nước mới</span><span>${roomDetails.soNuocMoi || 0}</span></div>
+              <div class="detail-item"><span>Tiền nước</span><span>${parseAndFormatCurrency(roomDetails.tienNuoc)}</span></div>
+        `;
+        if (roomDetails.tienWifi > 0) detailHtml += `<div class="detail-item"><span>Tiền WiFi</span><span>${parseAndFormatCurrency(roomDetails.tienWifi)}</span></div>`;
+        if (roomDetails.phiMayLanh > 0) detailHtml += `<div class="detail-item"><span>Phí máy lạnh</span><span>${parseAndFormatCurrency(roomDetails.phiMayLanh)}</span></div>`;
+        if (roomDetails.khac) detailHtml += `<div class="detail-item"><span>Khác</span><span>${roomDetails.khac}</span></div>`;
+        detailHtml += `<div class="detail-item total"><span><strong>TỔNG CỘNG</strong></span><span><strong>${parseAndFormatCurrency(roomDetails.tongCong)}</strong></span></div>`;
+        
+        // Thêm phần thông tin thanh toán và QR Code
+        detailHtml += `
+            <div class="payment-info">
+                <div class="qr-code">
+                    <img src="${qrApiUrl}" alt="Mã QR Thanh toán">
+                </div>
+                <div class="bank-details">
+                    <p><strong>Ngân hàng:</strong> VCB (TMCP Ngoại thương Việt Nam)</p>
+                    <p><strong>Chủ tài khoản:</strong> TRAN QUOC HUY</p>
+                    <p><strong>Số tài khoản:</strong> tranquochuy2000</p>
+                    <p><strong>Nội dung:</strong> ${description}</p>
+                </div>
+            </div>
+        `;
+
+        detailHtml += `</div>`; // Đóng .room-detail
+        contentDiv.innerHTML = detailHtml;
+      } else {
+        contentDiv.innerHTML = `<div class="room-detail"><p style="text-align: center;">Không tìm thấy dữ liệu cho "${selectedRoomName}" trong Tháng ${selectedMonth}.</p></div>`;
+      }
+    }
+
+    async function displayTotalExpenses(selectedMonth, contentDiv) {
+      const sheetName = `Chi tiêu Tháng ${selectedMonth}`;
+      const range = `${sheetName}!A:H`;
+      const data = await fetchData(`/values/${encodeURIComponent(range)}?`);
+      
+      if (!data.values || data.values.length < 2) throw new Error(`Không có dữ liệu trong trang tính "${sheetName}".`);
+      const rows = data.values;
+      const headers = rows[0];
+      const dataRow = rows[1];
+      let detailHtml = `<div class="room-detail"><h3 class="expense-title">📊 ${sheetName}</h3>`;
+
+      for (let j = 1; j < headers.length; j++) {
+        const header = headers[j];
+        const value = dataRow[j] || '0';
+        if (header) {
+          const isTotal = header.toLowerCase().includes('tổng cộng');
+          const isKhac = header.toLowerCase().includes('khác');
+          const formattedValue = isKhac ? value : parseAndFormatCurrency(value);
+          detailHtml += `<div class="detail-item ${isTotal ? 'total' : ''}">`;
+          detailHtml += `<span>${isTotal ? '<strong>' + header + '</strong>' : header}</span>`;
+          detailHtml += `<span>${isTotal ? '<strong>' + formattedValue + '</strong>' : formattedValue}</span>`;
+          detailHtml += `</div>`;
+        }
+      }
+      detailHtml += `</div>`;
+      contentDiv.innerHTML = detailHtml;
+    }
+
+    async function displayExpenseCalculation(selectedMonth, contentDiv) {
+      const roomSheetName = `Phòng Trọ Tháng ${selectedMonth}`;
+      const expenseSheetName = `Chi tiêu Tháng ${selectedMonth}`;
+      
+      const roomDataUrl = `/values/${encodeURIComponent(roomSheetName + '!A:N')}?`;
+      const expenseDataUrl = `/values/${encodeURIComponent(expenseSheetName + '!A:H')}?`;
+
+      const [roomData, expenseData] = await Promise.all([fetchData(roomDataUrl), fetchData(expenseDataUrl)]);
+      
+      let totalRevenue = 0;
+      let roomHtml = '';
+      if (roomData.values && roomData.values.length > 1) {
+        for (let i = 1; i < roomData.values.length; i++) {
+          const row = roomData.values[i];
+          if (row[1] && row[13]) {
+            const roomName = row[1];
+            const roomTotal = parseFloat(String(row[13]).replace(/[^0-9-]/g, '')) || 0;
+            totalRevenue += roomTotal;
+            roomHtml += `<div class="detail-item"><span>${roomName}</span><span>${parseAndFormatCurrency(roomTotal)}</span></div>`;
+          }
+        }
+      }
+
+      let totalExpense = 0;
+      if (expenseData.values && expenseData.values.length > 1) {
+        const expenseRow = expenseData.values[1];
+        totalExpense = parseFloat(String(expenseRow[7]).replace(/[^0-9-]/g, '')) || 0;
+      }
+
+      const finalBalance = totalRevenue - totalExpense;
+
+      const detailHtml = `
+        <div class="room-detail">
+            <h3 class="expense-title">📊 Bảng tính toán chi tiêu Tháng ${selectedMonth}</h3>
+            ${roomHtml}
+            <hr style="margin: 10px 0; border: none; border-top: 1px dashed #ccc;">
+            <div class="detail-item">
+                <span>Tổng chi tiêu Tháng ${selectedMonth}</span>
+                <span>- ${parseAndFormatCurrency(totalExpense)}</span>
+            </div>
+             <div class="detail-item total">
+                <span><strong>Tổng còn lại</strong></span>
+                <span><strong>${parseAndFormatCurrency(finalBalance)}</strong></span>
+            </div>
+        </div>
+      `;
+      contentDiv.innerHTML = detailHtml;
+    }
+
+    // --- EVENT LISTENERS ---
+    document.addEventListener('DOMContentLoaded', function () {
+      // Listener for form submissions
+      document.getElementById('googleForm').addEventListener('submit', function (e) {
+        const container = document.getElementById('khacFields');
+        const hiddenInput = document.getElementById('khacHiddenInput');
+        let dataString = '';
+        container.querySelectorAll('.dynamic-field').forEach(field => {
+          const ten = field.querySelector('input[type="text"]').value.trim();
+          const tien = field.querySelector('input[type="number"]').value;
+          if (ten && tien) dataString += `${ten}: ${parseAndFormatCurrency(tien)}\n`;
+        });
+        hiddenInput.value = dataString.trim();
+        formSubmitted = true;
+        submittedFormId = 'googleForm';
+      });
+
+      document.getElementById('chiTieuForm').addEventListener('submit', function (e) {
+        const container = document.getElementById('khacFieldsChiTieu');
+        const hiddenInput = document.getElementById('khacHiddenInputChiTieu');
+        let dataString = '';
+        container.querySelectorAll('.dynamic-field').forEach(field => {
+          const ten = field.querySelector('input[type="text"]').value.trim();
+          const tien = field.querySelector('input[type="number"]').value;
+          if (ten && tien) dataString += `${ten}: ${parseAndFormatCurrency(tien)}\n`;
+        });
+        hiddenInput.value = dataString.trim();
+        formSubmitted = true;
+        submittedFormId = 'chiTieuForm';
+      });
+
+      // Listener for the hidden iframe load event
+      document.getElementById('hidden_iframe').addEventListener('load', handleFormResponse);
+
+      // Listener to close modal on overlay click
+      document.getElementById('successModalOverlay').addEventListener('click', function (e) {
+        if (e.target === this) hideSuccessModal();
+      });
+    });
+
+  </script>
+</body>
+
+</html>
